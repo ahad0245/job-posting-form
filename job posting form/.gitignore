@@ -17,6 +17,7 @@ pnpm-debug.log*
 Thumbs.db
 .vscode/
 .idea/
+.vercel/
 
 # Local tool state
 .qodo/

@@ -9,6 +9,7 @@ dotenv.config();
 const app = express();
 const port = Number(process.env.PORT || 3000);
 const optionsFilePath = path.join(__dirname, "data", "ceipal-options.json");
+let masterDataMemoryCache = null;
 const defaultCeipalJobPostUrl =
   "https://api.ceipal.com/savecustomJobPostingDetails/S3dUMVNKYkRseEdmNHZxNTRPN0VwUT09/c4115f2aa4d7e7b6a15aa8cabf3ed36c/";
 const ceipalMasterApiBase =
@@ -1174,12 +1175,20 @@ function toFloat(value, fallback) {
 }
 
 function readMasterDataCache() {
+  if (masterDataMemoryCache) {
+    return masterDataMemoryCache;
+  }
+
   try {
     const raw = fs.readFileSync(optionsFilePath, "utf8");
     const parsed = JSON.parse(raw);
-    return normalizeMasterData(parsed);
+    const normalized = normalizeMasterData(parsed);
+    masterDataMemoryCache = normalized;
+    return normalized;
   } catch (_error) {
-    return normalizeMasterData({});
+    const normalized = normalizeMasterData({});
+    masterDataMemoryCache = normalized;
+    return normalized;
   }
 }
 
@@ -1244,7 +1253,7 @@ async function getGoogleSheetsClient() {
 
 async function buildGoogleAuth() {
   const keyFile = normalizeString(process.env.GOOGLE_SERVICE_ACCOUNT_FILE);
-  if (keyFile) {
+  if (keyFile && !isServerlessRuntime()) {
     return new google.auth.GoogleAuth({
       keyFile,
       scopes: ["https://www.googleapis.com/auth/spreadsheets"]
@@ -1281,6 +1290,10 @@ function normalizeSheetHeader(value) {
 function getGoogleSheetTabName() {
   const tabName = normalizeString(process.env.GOOGLE_SHEET_TAB, defaultSheetTabName);
   return /[\s']/g.test(tabName) ? `'${tabName.replace(/'/g, "''")}'` : tabName;
+}
+
+function isServerlessRuntime() {
+  return Boolean(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME);
 }
 
 function resolveGoogleServiceAccountEmail() {
@@ -1370,6 +1383,12 @@ async function getStatesForCountry(countryId, references, { forceRefresh = false
 }
 
 function writeMasterDataCache(cache) {
+  masterDataMemoryCache = normalizeMasterData(cache);
+
+  if (isServerlessRuntime()) {
+    return;
+  }
+
   fs.mkdirSync(path.dirname(optionsFilePath), { recursive: true });
   fs.writeFileSync(optionsFilePath, JSON.stringify(cache, null, 2));
 }
@@ -1634,6 +1653,10 @@ function getCeipalJobPostUrl() {
   return normalizeString(process.env.CEIPAL_JOB_POST_URL, defaultCeipalJobPostUrl);
 }
 
-app.listen(port, () => {
-  console.log(`CEIPAL job form running at http://localhost:${port}`);
-});
+if (require.main === module) {
+  app.listen(port, () => {
+    console.log(`CEIPAL job form running at http://localhost:${port}`);
+  });
+}
+
+module.exports = app;
