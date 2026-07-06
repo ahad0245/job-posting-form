@@ -1,0 +1,7 @@
+{
+  "name": "job-posting-form-root",
+  "private": true,
+  "workspaces": [
+    "job posting form"
+  ]
+}
