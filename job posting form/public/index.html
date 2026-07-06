@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CEIPAL Job Posting Form</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <main class="form-shell">
+      <section class="form-hero">
+        <div class="form-hero-band"></div>
+        <div class="form-card form-title-card">
+          <p class="eyebrow">Job Posting Form</p>
+          <h1>Post a job to CEIPAL, Zoho Recruit, or both.</h1>
+          <p class="intro">
+            Fill the form below, choose where to post the job, and submit. Required and optional fields are marked
+            clearly, and the response appears at the bottom like a confirmation section.
+          </p>
+          <div class="hero-meta">
+            <span id="healthBadge" class="pill pill-warn">Checking server config</span>
+            <span class="pill pill-neutral">Server-side auth</span>
+            <span class="pill pill-neutral">Single form submission</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="form-card target-form-card">
+        <div class="mini-head">
+          <h2>Where do you want to post?</h2>
+          <p>Select one or both destinations.</p>
+        </div>
+        <div class="target-stack">
+          <label class="target-row">
+            <input id="targetCeipal" type="checkbox" checked>
+            <span class="target-box"></span>
+            <span class="target-copy">
+              <strong>CEIPAL</strong>
+              <small>Uses CEIPAL authentication and job-post API</small>
+            </span>
+          </label>
+          <label class="target-row">
+            <input id="targetZoho" type="checkbox">
+            <span class="target-box"></span>
+            <span class="target-copy">
+              <strong>Zoho Recruit</strong>
+              <small>Uses Zoho Recruit Job Openings API</small>
+            </span>
+          </label>
+        </div>
+      </section>
+
+      <section class="form-card info-card">
+        <p>
+          <strong>Reference data:</strong> Countries, states, clients, recruitment managers, job statuses, job types,
+          and pay frequencies are fetched from CEIPAL and saved in <code>data/ceipal-options.json</code>.
+        </p>
+        <div class="form-actions">
+          <button id="refreshReferencesButton" type="button" class="secondary-button">Refresh CEIPAL data</button>
+        </div>
+        <p id="referenceStatus" class="field-help">Loading CEIPAL reference cache...</p>
+      </section>
+
+      <form id="jobForm" class="google-form-stack"></form>
+
+      <section class="form-card response-form-card">
+        <div class="mini-head">
+          <h2>Response</h2>
+          <p>Submission result from the APIs.</p>
+        </div>
+        <pre id="responseBox" class="response-box">No submission yet.</pre>
+        <div class="form-actions">
+          <button id="resetButton" type="button" class="secondary-button">Reset form</button>
+          <button id="submitButton" type="submit" form="jobForm" class="primary-button">Submit</button>
+        </div>
+      </section>
+    </main>
+
+    <template id="sectionTemplate">
+      <section class="form-card question-section">
+        <div class="section-band"></div>
+        <div class="section-head">
+          <h3 class="section-title"></h3>
+        </div>
+        <div class="field-grid"></div>
+      </section>
+    </template>
+
+    <template id="fieldTemplate">
+      <label class="question-card">
+        <span class="field-top">
+          <span class="field-label"></span>
+          <span class="field-badge"></span>
+        </span>
+        <span class="field-help"></span>
+        <span class="field-control"></span>
+      </label>
+    </template>
+
+    <script src="/app.js"></script>
+  </body>
+  </html>

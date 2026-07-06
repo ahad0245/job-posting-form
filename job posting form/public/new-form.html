@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Job Posting Workspace</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/new-form.css">
+  </head>
+  <body>
+    <main class="page-shell">
+      <section class="hero-banner">
+        <div class="hero-banner-copy">
+          <p class="eyebrow">Job Posting</p>
+          <h1>Job Posting</h1>
+          <p class="hero-text">
+            Choose the right job portal, complete one clean form, and submit with confidence. CEIPAL IDs are resolved
+            in the backend, while Zoho receives readable values such as country and state names.
+          </p>
+        </div>
+        <div class="hero-banner-meta">
+          <span id="healthBadge" class="status-pill status-warn">Checking server</span>
+          <span class="status-pill status-neutral">Single professional form</span>
+          <span class="status-pill status-neutral">Formatted description support</span>
+        </div>
+      </section>
+
+      <section class="portal-card">
+        <div class="portal-copy">
+          <h2>Which job portal should this posting go to?</h2>
+          <p>Select one portal or both. The form below updates automatically based on your selection.</p>
+        </div>
+        <div class="destination-stack">
+          <label class="destination-option">
+            <input id="targetCeipal" type="checkbox">
+            <span class="tick"></span>
+            <span class="destination-copy">
+              <strong>CEIPAL</strong>
+              <small>Uses CEIPAL mappings and ownership details for posting</small>
+            </span>
+          </label>
+          <label class="destination-option">
+            <input id="targetZoho" type="checkbox">
+            <span class="tick"></span>
+            <span class="destination-copy">
+              <strong>Zoho Recruit</strong>
+              <small>Uses the same job form with Zoho-specific posting fields</small>
+            </span>
+          </label>
+        </div>
+      </section>
+
+      <section class="workspace-card">
+        <div class="workspace-top">
+          <div class="workspace-copy">
+            <h2>Posting Form</h2>
+            <p id="targetSummary">Choose a destination to begin.</p>
+          </div>
+          <div class="workspace-tools">
+            <button id="refreshReferencesButton" type="button" class="ghost-button">Refresh CEIPAL Data</button>
+            <p id="referenceStatus" class="support-text">Loading CEIPAL references...</p>
+          </div>
+        </div>
+
+        <div class="progress-card">
+          <div class="progress-head">
+            <span>Form progress</span>
+            <strong id="progressLabel">0/0</strong>
+          </div>
+          <div class="progress-track">
+            <div id="progressBar" class="progress-fill"></div>
+          </div>
+          <p id="progressHint" class="progress-hint">Loading form definition...</p>
+        </div>
+
+        <div id="emptyState" class="empty-card">
+          <h2>Select a destination</h2>
+          <p>When you choose CEIPAL or Zoho Recruit, the full job posting form will appear below.</p>
+        </div>
+
+        <form id="jobForm" class="form-stack" novalidate></form>
+
+        <section class="response-card">
+          <div class="card-head">
+            <h2>Response</h2>
+            <p>Submission result from the local backend.</p>
+          </div>
+          <pre id="responseBox" class="response-box">No submission yet.</pre>
+          <div class="action-row">
+            <button id="resetButton" type="button" class="ghost-button">Reset</button>
+            <button id="submitButton" type="submit" form="jobForm" class="primary-button">Submit Job</button>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <template id="sectionTemplate">
+      <section class="section-card">
+        <div class="section-top">
+          <div>
+            <p class="section-kicker"></p>
+            <h3 class="section-title"></h3>
+          </div>
+          <span class="section-count"></span>
+        </div>
+        <div class="field-grid"></div>
+      </section>
+    </template>
+
+    <template id="fieldTemplate">
+      <label class="field-card">
+        <span class="field-line">
+          <span class="field-label"></span>
+          <span class="field-badge"></span>
+        </span>
+        <span class="field-help"></span>
+        <span class="field-control"></span>
+      </label>
+    </template>
+
+    <script src="/new-form.js"></script>
+  </body>
+  </html>

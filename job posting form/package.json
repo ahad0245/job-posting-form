@@ -1,0 +1,17 @@
+{
+  "name": "ceipal-job-post-form",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Manual CEIPAL job posting form based on an n8n payload.",
+  "main": "server.js",
+  "scripts": {
+    "prestart": "node scripts/stop-existing.js",
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.6.1",
+    "express": "^4.21.2",
+    "googleapis": "^173.0.0"
+  }
+}
